@@ -4,9 +4,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="./index.css" rel="stylesheet">
     <title>Hua Hoang Phuc</title>
 </head>
-<body>
+<body onload="onload()">
+    <form action="#" 
+        style="background-color: rgb(241, 254, 227); display: inline-block; padding: 0px 30px 30px 30px; border-radius: 20px;">
+        <table>
+            <thead>
+                <th colspan="2" style="color: red; padding: 10px 0px;">Đăng ký thành viên</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Họ tên:</td>
+                    <td><input type="text" name="hoten"/></td>
+                </tr>
+                <tr>
+                    <td>Tài khoản:</td>
+                    <td><input type="text" name="taikhoan"/></td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu:</td>
+                    <td><input type="password" name="matkhau"/></td>
+                </tr>
+                <tr>
+                    <td>Giới tính:</td>
+                    <td>
+                        <div style="display: inline;">
+                            <input id="nam" type="radio" name="gioitinh" value="1" checked/>
+                            <label for="nam" style="color: #319af5;">Nam</label>
+                        </div>
+                        <div style="display: inline;">
+                            <input id="nu" type="radio" name="gioitinh" value="0"/>
+                            <label for="nu" style="color: #f53176;">Nữ</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ:</td>
+                    <td>
+                        <select id="address" name ="address">
+                            <option value="0" selected>--Chọn địa chỉ--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button id="btn-submit" type="button">Đăng ký</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
     
 </body>
+<script>
+    function onload() {
+        $.ajax({
+            method: 'get',
+            url: "https://provinces.open-api.vn/api/?depth=3",
+        }).done(function(response){
+            for (i in response){
+                $('#address').append(`<option value="${response[i].code}">${response[i].name}</option>`)
+            }
+        });
+    }
+    $(document).ready(function(){
+        $('#btn-submit').on('click', function(event){
+            let data = $('form').serializeArray()
+            alert((data.map(item => item.name + ' : ' + item.value)).join('\n'))
+        })
+    });
+</script>
 </html>
